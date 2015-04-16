@@ -1,9 +1,9 @@
 compositing
 ===========
 
-** Author:** Robert Nikutta
-** Version:** 2014-12-12
-** License:** BSD 3-clause, please see [LICENSE](./LICENSE) file
+**Author:** Robert Nikutta
+**Version:** 2014-12-12
+**License:** BSD 3-clause, please see [LICENSE](./LICENSE) file
 
 alpha-blending (image compositing) of arbitrary number of
 monochromatic 2d images. Implements algorithms developed in [Porter &
