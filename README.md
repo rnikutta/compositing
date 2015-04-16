@@ -1,9 +1,9 @@
 compositing
 ===========
 
-## Author: Robert Nikutta
-## Version: 2014-12-12
-## License: BSD 3-clause, please see ![LICENSE](./LICENSE) file
+** Author:** Robert Nikutta
+** Version:** 2014-12-12
+** License:** BSD 3-clause, please see [LICENSE](./LICENSE) file
 
 alpha-blending (image compositing) of arbitrary number of
 monochromatic 2d images. Implements algorithms developed in [Porter &
@@ -18,7 +18,7 @@ total image. The alphas can also be assigned manually (per-slice).
 See also the extensive docstrings of classes `Compositing`, `Image`,
 `Cube`, `ClumpyImage` for documentation.
 
-####Contents of this dir####
+####Contents####
 
 An *Ipython Notebook* file is provided to see the classes in
 action. If you have Ipython notebook installed, launch
@@ -34,5 +34,6 @@ the file.
 notebook.
 
 `IMG-AA00-TORUSG-sig15-i60-Y010-N01-q0.0-tv005.0.fits.gz` is an
-example FITS file used in the notebook. It's a *CLUMPY* model, with
-nine 2d brightness maps of torus emission at different wavelengths.
+example FITS file used in the notebook. It's a
+[CLUMPY](https://www.clumpy.org) model, with nine 2d brightness maps
+of torus emission at different wavelengths.
