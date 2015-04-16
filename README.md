@@ -7,6 +7,8 @@ compositing
 
 **License:** BSD 3-clause, please see [LICENSE](./LICENSE) file
 
+![image](./compositing_files/compositing_35_0.png)
+
 alpha-blending (image compositing) of arbitrary number of
 monochromatic 2d images. Implements algorithms developed in [Porter &
 Duff (1984)](http://dl.acm.org/citation.cfm?id=808606) and [Smith
