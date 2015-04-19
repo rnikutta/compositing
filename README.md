@@ -3,7 +3,7 @@ compositing
 
 **Author:** Robert Nikutta
 
-**Version:** 2014-12-12
+**Version:** 2015-04-19
 
 **License:** BSD 3-clause, please see [LICENSE](./LICENSE) file
 
@@ -20,7 +20,8 @@ computed automatically such that each slice contributes 1/N to the
 total image. The alphas can also be assigned manually (per-slice).
 
 See also the extensive docstrings of classes `Compositing`, `Image`,
-`Cube`, `ClumpyImage` for documentation.
+`Cube`, and in clumpyimage.py the class `ClumpyImage`, for
+documentation.
 
 ####Contents####
 

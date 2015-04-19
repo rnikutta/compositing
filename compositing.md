@@ -3,6 +3,7 @@ Imports, plotting backend
 
 
     import compositing
+    import clumpyimage
     import pylab as p
     %matplotlib inline
 
@@ -16,7 +17,7 @@ Load slices (0,3,5). In this CLUMPY model they correspond to 0.1, 2.2, 10 micron
 brightness maps
 
 
-    obj = compositing.ClumpyImage(fitsfile,slices=(0,3,5))
+    obj = clumpyimage.ClumpyImage(fitsfile,slices=(0,3,5))
 
     in fullsize_img: hsimg.shape =  (9, 801, 401)
 

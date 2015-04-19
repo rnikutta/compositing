@@ -76,9 +76,9 @@ docstring of Compositing.__call__).
 """
 
 __author__ = "Robert Nikutta <robert.nikutta@gmail.com"
-__version__ = "2014-12-12"
+__version__ = "2015-04-19"
 
-import numpy as np
+import numpy as N
 import pyfits as pf
 import os
 import matplotlib
@@ -122,7 +122,7 @@ class Cube():
             if isinstance(slices,int):
                 slices = list(slices)
         
-        if not isinstance(slices,(list,tuple,np.ndarray)):
+        if not isinstance(slices,(list,tuple,N.ndarray)):
             raise Exception, "slices is neither None, nor an integer, nor a sequence of integers."
 
         self.slices = slices
@@ -151,90 +151,6 @@ class FitsFile():
 
         else:
             raise Exception, "'path' is not a regular file or is missing."
-
-
-class ClumpyImage(FitsFile,Cube):
-
-    """Load data from a Clumpy FITS image file.
-
-    Description
-    -----------
-    Loads the slices of the data cube from the primary HDU of a Clumpy
-    FITS image file. The primary HDU holds brightness distrubutions at
-    given wavelengths (the z-axis of the cube).
-
-    Parameters
-    ----------
-    path : str
-        Path to a Clumpy FITS file
-
-    slices : None, or list or 1D array of integers, or single integer
-        (Pythonic) index of FITS slice to fetch from fitsfile. If
-        none, the entire data cube from the FITS file will be
-        returned. If single integer, one slice will be returned.
-
-    return_fullsize : bool
-        If true, and the data cube in the FITS file was half-sized (nx
-        != ny), then the cube will be mirrored to the left, and a
-        full-sized cube will be returned.
-
-    flip_y : bool
-        If true, the cube will be flipped in the y-direction (In FITS
-        images, the rows are counted from to bottom, but Numpy arrays
-        count the opposite way.
-
-    """
-
-    def __init__(self,path,return_fullsize=True,flip_y=True,slices=(0,1,2)):
-
-        FitsFile.__init__(self,path)
-
-        self.slices = slices
- 
-        # mirror columns, giving full-sized CLUMPY image instead of half-sized
-        if return_fullsize:
-            if self.nx != self.ny:
-                self.data = self.fullsize_img(self.data)
-                # print "fullsize: data.shape: " , data.shape
-            else:
-                pass  # in this case the image was already square. Silently ignore the request to mirror.
-
-        # flip rows of cube (up-down flip)
-        if flip_y:
-            self.data = self.yflip(self.data)
-
-        Cube.__init__(self,self.data,self.slices)
-
-
-    def yflip(self,img):
-        """Flip a 3D datacube (nz,ny,nx) along its y-dimension."""
-
-        if img.ndim == 3:
-            return img[:,::-1,:]
-        else:
-            raise Exception, "Supplied data cube must have 3 axes, but has %d" % img.ndim
-
-
-    def fullsize_img(self,hsimg):
-        """Turn half-size Clumpy image cube into a full-sized one.
-
-        The full-size output cube will have the half-sized data (hsimg)
-        mirrored along the x-axis to the left. The very first y-column of
-        hsimg will be re-used, i.e. in the full-sized image it will occur
-        only once.
-
-        hsimg has shape (nz,ny,nx), where ny and nx are odd. The return
-        array will be of shape (nz,ny,2*nx-1), i.e. ny and nx still odd.
-
-        hsimg must have 3 axes.
-        """
-
-        print "in fullsize_img: hsimg.shape = ", hsimg.shape
-
-        if hsimg.ndim == 3:
-            return np.dstack((hsimg[:,:,:0:-1],hsimg))
-        else:
-            raise Exception, "Supplied data cube must have 3 axes, but has %d" % hsimg.ndim
 
 
 class Image():
@@ -285,7 +201,7 @@ class Image():
         self.rgb_tuple = matplotlib.colors.colorConverter.to_rgb(self.color)  # e.g. color='r'
 
         # construct image as RGBA
-        self.rgb = np.ones((self.ny,self.nx,3),dtype=np.float64)
+        self.rgb = N.ones((self.ny,self.nx,3),dtype=N.float64)
         for channel in xrange(3):
             self.rgb[:,:,channel] = self.data[...] * self.rgb_tuple[channel]  # set red channel
 
@@ -293,8 +209,8 @@ class Image():
     def construct_rgba(self):
 
         self.construct_rgb()
-        self.alpha_map = np.ones((self.nx,self.ny),dtype=np.float64) * self.alpha   # same shape as a single RGB channel
-        self.rgba = np.dstack((self.rgb,self.alpha_map))
+        self.alpha_map = N.ones((self.nx,self.ny),dtype=N.float64) * self.alpha   # same shape as a single RGB channel
+        self.rgba = N.dstack((self.rgb,self.alpha_map))
         self.alpha_premultiply()
 
 
@@ -312,7 +228,6 @@ class Image():
         """Nothing yet."""
 
         pass
-
 
 
 class Compositing():
@@ -425,7 +340,7 @@ class Compositing():
             self.cube /= self.cube.max()  # normalize to cube's maximum
 
         # background frame
-        self.img_bg = Image(np.ones((self.nx,self.ny)),bgcolor,1.)
+        self.img_bg = Image(N.ones((self.nx,self.ny)),bgcolor,1.)
         self.images = [self.img_bg]
 
         # set alphas of all layers
