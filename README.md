@@ -35,8 +35,8 @@ A window in your browser should pop up. There, load the file
 online [Ipython notebook viewer](http://nbviewer.ipython.org/) to play
 the file.
 
-`compositing.md` is a static *Markdown* view of the evaluated Ipython
-notebook.
+![compositing.md](./compositing.md) is a static *Markdown* view of the
+evaluated Ipython notebook.
 
 `IMG-AA00-TORUSG-sig15-i60-Y010-N01-q0.0-tv005.0.fits.gz` is an
 example FITS file used in the notebook. It's a
