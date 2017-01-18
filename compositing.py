@@ -76,10 +76,10 @@ docstring of Compositing.__call__).
 """
 
 __author__ = "Robert Nikutta <robert.nikutta@gmail.com"
-__version__ = "2015-04-19"
+__version__ = "2017-01-17"
 
 import numpy as N
-import pyfits as pf
+import astropy.io.fits as pf
 import os
 import matplotlib
 
@@ -423,3 +423,50 @@ class Compositing():
 
         norm = self.image[...,:-1].max()
         self.image[...,:-1] /= norm
+
+
+# HELPER FUNCTIONS
+
+def simplecube(*images):
+
+    """Easilty create a compositing object from a sequence of 2D arrays.
+
+    Parameters
+    ----------
+
+    *args : seq of 2D arrays
+        Each array in the sequence is one (monochromatic image
+        slice). They all have to have the same shape. The number of
+        slices can be arbitrary.
+
+    Returns
+    -------
+
+    c : instance
+        Returns an instance of the Compositing class, which can then
+        be used to compute and display alpha-composited images of the
+        slice cube.
+
+    Example
+    -------
+
+    from numpy import zeros
+    from pylab import imshow
+    s = (2,2)
+    r = zeros(s)
+    g = zeros(s)
+    b = zeros(s)
+    y = zeros(s)
+    r[0,0] = g[1,0] = b[1,1] = y[0,1] = 1
+    c = simplecube(r,g,b,y)
+    c(['r','g','b','y'],bgcolor='k',normalize_slices=True)
+    imshow(c.image,interpolation='none')
+
+    """
+    
+    nimages = len(images)
+    arr = N.array(images)
+    obj = Cube(arr,slices=range(nimages))
+    c = Compositing(obj)
+
+    return c
