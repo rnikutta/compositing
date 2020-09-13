@@ -76,7 +76,7 @@ docstring of Compositing.__call__).
 """
 
 __author__ = "Robert Nikutta <robert.nikutta@gmail.com"
-__version__ = "2017-01-17"
+__version__ = "20200912"
 
 import numpy as N
 import astropy.io.fits as pf
@@ -123,7 +123,7 @@ class Cube():
                 slices = list(slices)
         
         if not isinstance(slices,(list,tuple,N.ndarray)):
-            raise Exception, "slices is neither None, nor an integer, nor a sequence of integers."
+            raise Exception("slices is neither None, nor an integer, nor a sequence of integers.")
 
         self.slices = slices
         self.__update_cube()
@@ -141,7 +141,7 @@ class FitsFile():
             try:
                 self.hdr = pf.getheader(path)
             except IOError:
-                raise Exception, "Opening FITS file %s failed." % path
+                raise Exception("Opening FITS file %s failed." % path)
     
             self.nw = self.hdr['NAXIS3']
             self.ny = self.hdr['NAXIS2']
@@ -150,7 +150,7 @@ class FitsFile():
             self.data = pf.getdata(path)
 
         else:
-            raise Exception, "'path' is not a regular file or is missing."
+            raise Exception("'path' is not a regular file or is missing.")
 
 
 class Image():
@@ -202,7 +202,7 @@ class Image():
 
         # construct image as RGBA
         self.rgb = N.ones((self.ny,self.nx,3),dtype=N.float64)
-        for channel in xrange(3):
+        for channel in range(3):
             self.rgb[:,:,channel] = self.data[...] * self.rgb_tuple[channel]  # set red channel
 
 
@@ -218,7 +218,7 @@ class Image():
 
         """alpha-premultiply the color channels."""
 
-        for channel in xrange(3):
+        for channel in range(3):
             self.rgba[:,:,channel] *= self.alpha_map
 
         self.alpha_premultiplied = True   # to be used in future versions
@@ -334,7 +334,7 @@ class Compositing():
 
         self.colors = colors
         if len(self.colors) != self.nz:
-            raise Exception, "Number of provided colors must match number of images."
+            raise Exception("Number of provided colors must match number of images.")
 
         if normalize_cube:
             self.cube /= self.cube.max()  # normalize to cube's maximum
@@ -348,7 +348,7 @@ class Compositing():
             alphas = [1/float(j+2) for j in range(self.nz)]  # +2 because a background 'image' is added
 
         # generate RGBA representations of all slices to be blended
-        for j in xrange(self.nz):
+        for j in range(self.nz):
             Image_ = Image(self.cube[j,:,:],self.colors[j],alpha=alphas[j],normalize=normalize_slices)
             self.images.append(Image_)
 
@@ -390,7 +390,7 @@ class Compositing():
         beta = B[...,-1]
 
         aux = A.copy()
-        for j in xrange(4):
+        for j in range(4):
             aux[:,:,j] *= beta[:,:]
 
         C = B + A - aux
@@ -408,7 +408,7 @@ class Compositing():
         """
 
         self.image = self.images[0].rgba
-        for j in xrange(1,len(self.images)):
+        for j in range(1,len(self.images)):
             self.image = self.over_premultiplied(self.image,self.images[j].rgba)
 
 
@@ -466,7 +466,8 @@ def simplecube(*images):
     
     nimages = len(images)
     arr = N.array(images)
-    obj = Cube(arr,slices=range(nimages))
+#    obj = Cube(arr,slices=range(nimages))
+    obj = Cube(arr,slices=list(range(nimages)))
     c = Compositing(obj)
 
     return c
