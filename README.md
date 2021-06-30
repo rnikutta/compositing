@@ -1,3 +1,5 @@
+![GitHub all releases](https://img.shields.io/github/downloads/rnikutta/compositing/total)
+
 compositing
 ===========
 
